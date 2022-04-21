@@ -8,6 +8,7 @@ MainWindow::MainWindow(QWidget *parent)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+
     connect(timer, SIGNAL(timeout()),this,SLOT(actualizarEstado()));
     // conectar los botones con el metodo
     connect(ui->Carta01, SIGNAL(clicked()),this,SLOT(cartaVista()));
@@ -138,6 +139,7 @@ void MainWindow::definirResultadoPreliminar(){
     }
 }
 
+// Volver la cartas nuevamente
 void MainWindow::reiniciarCartas(){
 
     cartaActual->setStyleSheet("#"+cartaActual->objectName()+"{}");
@@ -153,11 +155,13 @@ void MainWindow::mostrarImagen(){
     cartaActual->setStyleSheet("#"+nombre_carta+"{ background-image: url(://"+ img ) ;
 }
 
+//Mezclar cartas
 void MainWindow::mezclar(){
     unsigned seed = std::chrono::system_clock::now().time_since_epoch().count();
     shuffle(cartas.begin(),cartas.end(),std::default_random_engine(seed));// Es el que dice que elementos queremos mezclar
 
 }
+// Repartir cartas
 void MainWindow::repartir(){
     auto iterador=cartas.begin();
     for (int i=1; i<=8; i++){
@@ -173,7 +177,7 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
-
+// Conexion con cliente
 void MainWindow::on_pushButton_clicked()
 {
     socketCliente->connectToHost("localHost",9872);
